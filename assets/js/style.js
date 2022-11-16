@@ -13,14 +13,14 @@ var currentDayDisplay = document.getElementById("current-day");
 var fiveDayDisplay = document.getElementById("five-day");
 var apiKeyOne = "2768f4e462cf5ac";
 var apiKeyTwo = "7fe624327115c943a";
-var geocodingAPI = "http://api.openweathermap.org/geo/1.0/direct";
+var geocodingAPI = "https://api.openweathermap.org/geo/1.0/direct";
 var currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather";
-var fiveDayAPI = "http://api.openweathermap.org/data/2.5/forecast";
+var fiveDayAPI = "https://api.openweathermap.org/data/2.5/forecast";
 
 // FUNCTIONS
 
 async function fetchCoordinates(city) {
-  var rootEndpoint = "http://api.openweathermap.org/geo/1.0/direct";
+  var rootEndpoint = "https://api.openweathermap.org/geo/1.0/direct";
   var apiCall = rootEndpoint + "?q=" + city + "&appid=" + apiKeyOne + apiKeyTwo;
   var geoData;
   await fetch(apiCall)
@@ -57,7 +57,7 @@ async function fetchWeather(lat, lon, city) {
     "&appid=" +
     apiKeyOne +
     apiKeyTwo;
-  var emojiURL = "http://openweathermap.org/img/wn/{id}@2x.png";
+  var emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
   const d = new Date();
   var today = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
   await fetch(apiCall)
@@ -117,7 +117,7 @@ async function fetchFiveDay(lat, lon) {
           // if usedDays does not include the day of list[i] then push and log
           if (!usedDays.includes(dayOfListItem)) {
             var dayObject = new Object();
-            var emojiURL = "http://openweathermap.org/img/wn/{id}@2x.png";
+            var emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
             dayObjectIndex++;
             dayObject.date = list[i].dt_txt.split(" ")[0];
             dayObject.icon = emojiURL.replace("{id}", list[i].weather[0].icon);
