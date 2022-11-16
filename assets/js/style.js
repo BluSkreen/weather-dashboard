@@ -1,5 +1,4 @@
 // key
-// 2768f4e462cf5ac7fe624327115c943a
 // endpoint
 // api.openweathermap.org
 // http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
@@ -12,7 +11,6 @@ var userForm = document.getElementById("form-sbt");
 var weatherDisplay = document.getElementById("weather-display");
 var currentDayDisplay = document.getElementById("current-day");
 var fiveDayDisplay = document.getElementById("five-day");
-var apiKey = "2768f4e462cf5ac7fe624327115c943a";
 var apiKeyOne = "2768f4e462cf5ac";
 var apiKeyTwo = "7fe624327115c943a";
 var geocodingAPI = "http://api.openweathermap.org/geo/1.0/direct";
