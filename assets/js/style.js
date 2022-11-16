@@ -135,7 +135,6 @@ async function handleFormSubmit(e) {
   await fetchCoordinates(input);
 
   refreshButtons();
-  // addButtonListeners();
   //make an api call with that search tearm adn congirtm data is sent back
 }
 
@@ -171,8 +170,11 @@ function searchButtonList(e) {
   fetchCoordinates(this.textContent);
 }
 
+if (Object.keys(localStorage).length == 0) {
+  fetchCoordinates("denver");
+} else {
+  fetchCoordinates(Object.keys(localStorage)[Object.keys(localStorage).length - 1]);
+}
 // EVENT LISTENERS
 refreshButtons();
-// addButtonListeners();
-
 inputButton.addEventListener("click", handleFormSubmit);
