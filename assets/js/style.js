@@ -13,6 +13,8 @@ var weatherDisplay = document.getElementById("weather-display");
 var currentDayDisplay = document.getElementById("current-day");
 var fiveDayDisplay = document.getElementById("five-day");
 var apiKey = "2768f4e462cf5ac7fe624327115c943a";
+var apiKeyOne = "2768f4e462cf5ac";
+var apiKeyTwo = "7fe624327115c943a";
 var geocodingAPI = "http://api.openweathermap.org/geo/1.0/direct";
 var currentWeatherAPI = "https://api.openweathermap.org/data/2.5/weather";
 var fiveDayAPI = "http://api.openweathermap.org/data/2.5/forecast";
@@ -21,7 +23,7 @@ var fiveDayAPI = "http://api.openweathermap.org/data/2.5/forecast";
 
 async function fetchCoordinates(city) {
   var rootEndpoint = "http://api.openweathermap.org/geo/1.0/direct";
-  var apiCall = rootEndpoint + "?q=" + city + "&appid=" + apiKey;
+  var apiCall = rootEndpoint + "?q=" + city + "&appid=" + apiKeyOne + apiKeyTwo;
   var geoData;
   await fetch(apiCall)
     .then(function (response) {
@@ -48,7 +50,15 @@ async function fetchCoordinates(city) {
 // This function will get the current weather for given coords and display them
 async function fetchWeather(lat, lon, city) {
   var apiCall =
-    currentWeatherAPI + "?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&appid=" + apiKey;
+    currentWeatherAPI +
+    "?lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&units=imperial" +
+    "&appid=" +
+    apiKeyOne +
+    apiKeyTwo;
   var emojiURL = "http://openweathermap.org/img/wn/{id}@2x.png";
   const d = new Date();
   var today = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
@@ -76,7 +86,16 @@ async function fetchWeather(lat, lon, city) {
 
 // This function will get the five day weather for given coords and display them
 async function fetchFiveDay(lat, lon) {
-  var apiCall = fiveDayAPI + "?lat=" + lat + "&lon=" + lon + "&units=imperial" + "&appid=" + apiKey;
+  var apiCall =
+    fiveDayAPI +
+    "?lat=" +
+    lat +
+    "&lon=" +
+    lon +
+    "&units=imperial" +
+    "&appid=" +
+    apiKeyOne +
+    apiKeyTwo;
   await fetch(apiCall)
     .then(function (response) {
       return response.json();
