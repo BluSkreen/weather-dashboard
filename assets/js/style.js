@@ -59,7 +59,8 @@ async function fetchWeather(lat, lon, city) {
     .then(function (currentDayData) {
       // console.log(currentDayData);
       // display city and date
-      currentDayDisplay.children[0].children[0].children[0].textContent = city + " " + today;
+      currentDayDisplay.children[0].children[0].children[0].textContent =
+        city.charAt(0).toUpperCase() + city.slice(1) + " " + today;
       // use icon ID to make icon url, then, set img src to new url
       emojiURL = emojiURL.replace("{id}", currentDayData.weather[0].icon);
       currentDayDisplay.children[0].children[0].children[1].setAttribute("src", emojiURL);
@@ -99,12 +100,14 @@ async function fetchFiveDay(lat, lon) {
           // if usedDays does not include the day of list[i] then push and log
           if (!usedDays.includes(dayOfListItem)) {
             var dayObject = new Object();
+            var emojiURL = "http://openweathermap.org/img/wn/{id}@2x.png";
             dayObjectIndex++;
             dayObject.date = list[i].dt_txt.split(" ")[0];
+            dayObject.icon = emojiURL.replace("{id}", list[i].weather[0].icon);
             dayObject.temp = list[i].main.temp;
             dayObject.wind = list[i].wind.speed;
             dayObject.humidity = list[i].main.humidity;
-            // console.log(list[i]);
+            console.log(list[i]);
             // console.log(dayOfListItem);
             // console.log(dayObject);
             fiveDaySorted.push(dayObject);
@@ -117,6 +120,10 @@ async function fetchFiveDay(lat, lon) {
       for (var i = 0; i < fiveDayDisplay.childElementCount; i++) {
         // console.log(fiveDayDisplay.children[i].children);
         fiveDayDisplay.children[i].children[0].children[0].textContent = fiveDaySorted[i].date;
+        fiveDayDisplay.children[i].children[0].children[1].setAttribute(
+          "src",
+          fiveDaySorted[i].icon
+        );
         fiveDayDisplay.children[i].children[0].children[2].textContent =
           "Temp: " + fiveDaySorted[i].temp;
         fiveDayDisplay.children[i].children[0].children[3].textContent =
@@ -143,7 +150,7 @@ async function handleFormSubmit(e) {
 // </button>
 
 function refreshButtons() {
-  console.log(Object.keys(localStorage));
+  // console.log(Object.keys(localStorage));
   var storageKeys = Object.keys(localStorage);
   buttonList.innerHTML = "";
   for (var i = 0; i < storageKeys.length; i++) {
@@ -160,7 +167,7 @@ function refreshButtons() {
   }
   var buttons = document.querySelectorAll(".buttons");
   for (var j of buttons) {
-    console.log(j);
+    // console.log(j);
     j.addEventListener("click", searchButtonList);
   }
 }
