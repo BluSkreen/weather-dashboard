@@ -7,6 +7,7 @@
 // VARIABLE DECLARATIONS
 var userInput = document.getElementById("user-input");
 var inputButton = document.getElementById("input-button");
+var buttonList = document.getElementById("button-list");
 var userForm = document.getElementById("form-sbt");
 var weatherDisplay = document.getElementById("weather-display");
 var currentDayDisplay = document.getElementById("current-day");
@@ -25,13 +26,21 @@ async function fetchCoordinates(city) {
   await fetch(apiCall)
     .then(function (response) {
       // console.log(response);
+      if (!response.ok) {
+        throw new Error("Network response was not OK");
+      }
       return response.json();
     })
     .then(function (data) {
       // console.log(fetchData);
       geoData = data;
+      localStorage.setItem(city, city);
+    })
+    .catch(function (error) {
+      console.error("There has been a problem with your fetch operation: ", error);
     });
-  console.log(geoData);
+  // console.log(geoData);
+
   fetchWeather(geoData[0].lat, geoData[0].lon, city);
   fetchFiveDay(geoData[0].lat, geoData[0].lon);
 }
@@ -45,11 +54,10 @@ async function fetchWeather(lat, lon, city) {
   var today = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
   await fetch(apiCall)
     .then(function (response) {
-      //
       return response.json();
     })
     .then(function (currentDayData) {
-      console.log(currentDayData);
+      // console.log(currentDayData);
       // display city and date
       currentDayDisplay.children[0].children[0].children[0].textContent = city + " " + today;
       // use icon ID to make icon url, then, set img src to new url
@@ -73,7 +81,7 @@ async function fetchFiveDay(lat, lon) {
       return response.json();
     })
     .then(function (fiveDayData) {
-      console.log(fiveDayData);
+      // console.log(fiveDayData);
       var list = fiveDayData.list;
       var dayObjectIndex = 0;
       var fiveDaySorted = [];
@@ -81,6 +89,7 @@ async function fetchFiveDay(lat, lon) {
       // go through every item in list (i < 40)
       for (var i = 0; i < list.length; i++) {
         // This gets the specific day of list[i]
+        // console.log(list[i].dt_txt);
         var dayOfListItem = list[i].dt_txt.split("-")[2].split(" ")[0];
         const d = new Date();
         var today = d.getDate();
@@ -97,14 +106,14 @@ async function fetchFiveDay(lat, lon) {
             dayObject.humidity = list[i].main.humidity;
             // console.log(list[i]);
             // console.log(dayOfListItem);
-            console.log(dayObject);
+            // console.log(dayObject);
             fiveDaySorted.push(dayObject);
             usedDays.push(dayOfListItem);
           }
         }
       }
-      console.log(fiveDaySorted);
-
+      // console.log(fiveDaySorted);
+      // DOM manipulations
       for (var i = 0; i < fiveDayDisplay.childElementCount; i++) {
         // console.log(fiveDayDisplay.children[i].children);
         fiveDayDisplay.children[i].children[0].children[0].textContent = fiveDaySorted[i].date;
@@ -118,36 +127,52 @@ async function fetchFiveDay(lat, lon) {
     });
 }
 
-// function renderDayForcast(data) {
-
-// }
-
-// <button type="submit" class="btn btn-secondary" style="width: 100%" id="input-button">
-//   Search
-// </button>;
-// function renderCards(data) {}
-
 // this function is responsible for form submission bt capturing user input
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
   e.preventDefault();
 
-  var input = userInput.value;
-  fetchCoordinates(input);
+  var input = userInput.value.toLowerCase();
+  await fetchCoordinates(input);
 
+  refreshButtons();
+  // addButtonListeners();
   //make an api call with that search tearm adn congirtm data is sent back
 }
 
+// <button type="submit" class="btn btn-primary" style="width: 100%">
+//   Search
+// </button>
+
+function refreshButtons() {
+  console.log(Object.keys(localStorage));
+  var storageKeys = Object.keys(localStorage);
+  buttonList.innerHTML = "";
+  for (var i = 0; i < storageKeys.length; i++) {
+    //create button
+    var listButton = document.createElement("button");
+    // apply change
+    listButton.setAttribute("type", "button");
+    listButton.setAttribute("class", "btn btn-secondary buttons");
+    listButton.setAttribute("style", "width: 100%");
+    listButton.textContent = storageKeys[i];
+    //insert in DOM buttonList
+    buttonList.append(listButton);
+    // console.log(buttonList.children[i]);
+  }
+  var buttons = document.querySelectorAll(".buttons");
+  for (var j of buttons) {
+    console.log(j);
+    j.addEventListener("click", searchButtonList);
+  }
+}
+
+function searchButtonList(e) {
+  e.preventDefault();
+  fetchCoordinates(this.textContent);
+}
+
 // EVENT LISTENERS
+refreshButtons();
+// addButtonListeners();
+
 inputButton.addEventListener("click", handleFormSubmit);
-
-//Local Storage
-
-//create an empty array
-
-//push that value(name of the city) to that array
-
-// localStorage.getItem("cities")
-
-// localStorage.setItem("cities", )
-
-//["austin", "denver", "seattle"]
