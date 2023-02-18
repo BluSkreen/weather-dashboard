@@ -1,7 +1,5 @@
 import { useState } from 'react';
-
 import { Header, SearchBar, LocalStorage, OneDay, FiveDay } from './components';
-
 import './App.css'
 
 function App() {
