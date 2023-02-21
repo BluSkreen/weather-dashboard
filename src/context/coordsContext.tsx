@@ -1,30 +1,41 @@
-import React, { createContext, useContext, useState } from "react";
+import * as React from "react";
+import { CityContextType, CoordsType } from "../@types/city";
 
-const CoordsContext = createContext();
+interface Props {
+    children: React.ReactNode;
+};
 
-export const useCoordsContext = () => useContext(CoordsContext);
+const CityContext = React.createContext<CityContextType | null>(null);
 
-export const CoordsProvider = ({ children }) => {
-  const [coords, setCoords] = useState("");
-  const [city, setCity] = useState("");
+export const useCoordsContext = () => React.useContext(CityContext) as CityContextType;
 
-  const onCityChange = (e) => {
-    const cityInput = e.target.value;
+const CityProvider: React.FC<Props> = ({ children }) => {
+  const [coords, setCoords] = React.useState<CoordsType>({ lat: 0, lon: 0});
+  const [city, setCity] = React.useState<string>("");
+
+  const updateCoords = (newCoords: CoordsType): void => {
+    // console.log(emailInput);
+    setCoords(newCoords);
+  };
+
+  const onCityChange = (newCity: string): void => {
+    const cityInput = newCity;
     // console.log(emailInput);
     setCity(cityInput);
   };
 
   return (
-    <CoordsContext.Provider
+    <CityContext.Provider
       value={{
         coords,
-        setCoords,
+        updateCoords,
         city,
-        setCity,
+        onCityChange,
       }}
     >
       {children}
-    </CoordsContext.Provider>
+    </CityContext.Provider>
   );
 };
 
+export default CityProvider;

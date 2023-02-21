@@ -1,36 +1,35 @@
-import React, { useState } from 'react';
-import { useCoordsContext } from "../utils/CoordsContext";
+import * as React from 'react';
+import { useCoordsContext } from "../context/coordsContext";
+import { CityContextType, CoordsType, LSCityType } from "../@types/city";
 
 const SearchBar = () => {
-    const [geoData, setGeoData] = useState({});
-    const { coords, setCoords, city, setCity } = useCoordsContext();
+    const { coords, updateCoords, city, onCityChange } = useCoordsContext();
+    const [searchCity, setSearchCity] = React.useState<string>("");
 
     let apiKeyOne = "2768f4e462cf5ac";
     let apiKeyTwo = "7fe624327115c943a";
     let rootEndpoint = "https://api.openweathermap.org/geo/1.0/direct";
 
-
     // FUNCTIONS
 
     async function fetchCoordinates() {
-        let apiCall = rootEndpoint + "?q=" + city + "&appid=" + apiKeyOne + apiKeyTwo;
-      console.log("hi");
-      await fetch(apiCall)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not OK");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          localStorage.setItem(city, city);
-          console.log(data);
-        })
-        .catch(function (error) {
-          console.error("There has been a problem with your fetch operation: ", error);
-        });
+        const fetchCity = (" " + searchCity).slice(1); // copy string because fetch is async
+        let apiCall = rootEndpoint + "?q=" + fetchCity + "&appid=" + apiKeyOne + apiKeyTwo;
+        const response = await fetch(apiCall)
+        try {
+            if (!response.ok) {
+                throw new Error("Network response was not OK");
+            }
+            const geodata = await response.json();
+            updateCoords({ lat: geodata[0].lat, lon: geodata[0].lon } as CoordsType)
+            onCityChange(fetchCity);
+            localStorage.setItem(fetchCity, JSON.stringify({ fetchCity, coords } as LSCityType));
+            console.log(geodata);
+        }catch(err) {
+            console.error("There has been a problem with your fetch operation: ", err);
+        };
 
-        setCity("");
+        setSearchCity("");
       // fetchWeather(geoData[0].lat, geoData[0].lon, city);
       // fetchFiveDay(geoData[0].lat, geoData[0].lon);
     }
@@ -42,8 +41,8 @@ const SearchBar = () => {
             <input 
                 className="text-black"
                 type="text" 
-                value={city} 
-                onChange={(e) => setCity(e.target.value)}
+                value={searchCity} 
+                onChange={(e) => setSearchCity(e.target.value)}
             />
             <button type="button" onClick={fetchCoordinates}>
                 Search
