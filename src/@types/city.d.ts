@@ -15,3 +15,5 @@ export type LSCityType = {
     fetchCity: string;
     coords: CoordsType;
 };
+
+export type UpdateSaved = { [key: string]: CoordsType };

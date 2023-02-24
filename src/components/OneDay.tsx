@@ -28,7 +28,7 @@ const OneDay = () => {
           return response.json();
         })
         .then(function (currentDayData) {
-          // console.log(currentDayData);
+          console.log(currentDayData);
           // display city and date
           setDisplay(city.charAt(0).toUpperCase() + city.slice(1) + " " + today);
           setEmoji(emoji.replace("{id}", currentDayData.weather[0].icon));
@@ -39,8 +39,11 @@ const OneDay = () => {
     }
 
     React.useEffect(() => {
-        fetchWeather();
-    }, [coords])
+        if(city !== "" && (coords["lat"] != 0 || coords["lon"] != 0)) {
+            console.log(coords);
+            fetchWeather();
+        }
+    }, [coords, city])
 
     return (
         <div>
