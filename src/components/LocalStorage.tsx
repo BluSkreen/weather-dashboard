@@ -26,12 +26,28 @@ const LocalStorage = () => {
         }
     }, [city, coords]);
 
+    const deleteCity = (event: React.MouseEvent) => {
+        event.preventDefault();
+        const { target } = event;
+        let deleted: UpdateSaved = { ...saved };
+        delete deleted[(target as HTMLButtonElement).value];
+        setSaved({ ...deleted });
+        localStorage.removeItem((target as HTMLButtonElement).value);
+    }
+
     return (
         <div>
             <h1>Saved</h1>
-            { Object.entries(saved).map(([key, value]) => {
-                return (<span key={key}>{key}</span>)
-            })}
+            <div className='flex flex-col'>
+                { Object.entries(saved).map(([key, value]) => { return (
+                    <div className='flex justify-between'>
+                        <button><span className='' key={key}>{key}</span></button>
+                        <button value={key} onClick={deleteCity}>
+                            {`delete`}
+                        </button>
+                    </div>
+                )})}
+            </div>
         </div>
     );
 };
