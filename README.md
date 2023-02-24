@@ -3,7 +3,7 @@
 ### todo
 
 - [x] aside with search
-- [ ] redux 
-- [ ] fetch weather data
-- [ ] dynamic display
-- [ ] save cities local storage
+- [x] fetch weather data
+- [x] save cities local storage
+- [ ] card for todays forcast
+- [ ] chart for 5 day forcast
