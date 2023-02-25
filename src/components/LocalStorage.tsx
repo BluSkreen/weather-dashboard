@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useCoordsContext } from "../context/coordsContext";
 import { CityContextType, CoordsType, LSCityType, UpdateSaved } from "../@types/city";
 
-
 const LocalStorage = () => {
     const { coords, updateCoords, city, onCityChange } = useCoordsContext();
     const [saved, setSaved] = React.useState({});
