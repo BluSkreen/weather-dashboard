@@ -13,7 +13,7 @@ function App() {
                         <SearchBar/>
                         <LocalStorage/>
                     </aside>
-                    <section>
+                    <section className='flex flex-col justify-center'>
                         <OneDay/>
                         <FiveDay/>
                     </section>
