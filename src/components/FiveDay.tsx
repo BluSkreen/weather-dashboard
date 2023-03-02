@@ -14,11 +14,18 @@ const FiveDay = () => {
     const [emoji, setEmoji] = React.useState("");
     const [display, setDisplay] = React.useState("");
 
+    const [forecast, setForecast] = React.useState([{
+        temp: "",
+        wind: "",
+        humidity: "",
+        emoji: "",
+        display: ""
+    }]);
 
     // This function will get the five day weather for given coords and display them
     async function fetchFiveDay() {
-      fiveDayAPI.searchParams.set("lat", lat);
-      fiveDayAPI.searchParams.set("lon", lat);
+      fiveDayAPI.searchParams.set("lat", `${coords["lat"]}`);
+      fiveDayAPI.searchParams.set("lon", `${coords["lon"]}`);
       fiveDayAPI.searchParams.set("units", "imperial");
       fiveDayAPI.searchParams.set("appid", apiKeyOne+apiKeyTwo);
 
@@ -28,24 +35,24 @@ const FiveDay = () => {
         })
         .then(function (fiveDayData) {
           // console.log(fiveDayData);
-          var list = fiveDayData.list;
-          var dayObjectIndex = 0;
-          var fiveDaySorted = [];
-          var usedDays = []; // Keeps track of days seen
+          let list = fiveDayData.list;
+          let dayObjectIndex = 0;
+          let fiveDaySorted = forecast;
+          let usedDays; // Keeps track of days seen
           // go through every item in list (i < 40)
-          for (var i = 0; i < list.length; i++) {
+          for (let i = 0; i < list.length; i++) {
             // This gets the specific day of list[i]
             // console.log(list[i].dt_txt);
-            var dayOfListItem = list[i].dt_txt.split("-")[2].split(" ")[0];
+            let dayOfListItem = list[i].dt_txt.split("-")[2].split(" ")[0];
             const d = new Date();
-            var today = d.getDate();
+            let today = d.getDate();
             // compare current day to day of list[i]
             // AND compare current day + 6 to the day of list[i]
             if (today != dayOfListItem && today + 6 != dayOfListItem) {
               // if usedDays does not include the day of list[i] then push and log
               if (!usedDays.includes(dayOfListItem)) {
-                var dayObject = new Object();
-                var emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
+                let dayObject = new Object();
+                let emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
                 dayObjectIndex++;
                 dayObject.date = list[i].dt_txt.split(" ")[0];
                 dayObject.icon = emojiURL.replace("{id}", list[i].weather[0].icon);
