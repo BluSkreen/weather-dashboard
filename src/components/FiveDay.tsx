@@ -12,14 +12,13 @@ const FiveDay = () => {
     const [wind, setWind] = React.useState("");
     const [humidity, setHumidity] = React.useState("");
     const [emoji, setEmoji] = React.useState("");
-    const [display, setDisplay] = React.useState("");
 
     const [forecast, setForecast] = React.useState([{
+        date: "",
         temp: "",
         wind: "",
         humidity: "",
         emoji: "",
-        display: ""
     }]);
 
     // This function will get the five day weather for given coords and display them
@@ -34,53 +33,61 @@ const FiveDay = () => {
           return response.json();
         })
         .then(function (fiveDayData) {
-          // console.log(fiveDayData);
+            //TODO change: this currently gets the first hour of each dayObjectIndex
           let list = fiveDayData.list;
           let dayObjectIndex = 0;
-          let fiveDaySorted = forecast;
-          let usedDays; // Keeps track of days seen
+          let usedDays: string[] = []; // Keeps track of days seen
           // go through every item in list (i < 40)
+          // use first hour of each day
           for (let i = 0; i < list.length; i++) {
-            // This gets the specific day of list[i]
-            // console.log(list[i].dt_txt);
             let dayOfListItem = list[i].dt_txt.split("-")[2].split(" ")[0];
             const d = new Date();
             let today = d.getDate();
             // compare current day to day of list[i]
             // AND compare current day + 6 to the day of list[i]
-            if (today != dayOfListItem && today + 6 != dayOfListItem) {
-              // if usedDays does not include the day of list[i] then push and log
-              if (!usedDays.includes(dayOfListItem)) {
-                let dayObject = new Object();
+            if (today != dayOfListItem 
+                && today + 6 != dayOfListItem 
+                && !usedDays.includes(dayOfListItem)) {
+
                 let emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
+                let newForecast = forecast;
+                newForecast[dayObjectIndex] = {
+                    date: `${list[i].dt_txt.split(" ")[0]}`,
+                    temp: `${list[i].main.temp}`,
+                    wind: `${list[i].wind.speed}`,
+                    humidity: `${list[i].main.humidity}`,
+                    emoji: emojiURL.replace("{id}", list[i].weather[0].icon),
+                }
                 dayObjectIndex++;
-                dayObject.date = list[i].dt_txt.split(" ")[0];
-                dayObject.icon = emojiURL.replace("{id}", list[i].weather[0].icon);
-                dayObject.temp = list[i].main.temp;
-                dayObject.wind = list[i].wind.speed;
-                dayObject.humidity = list[i].main.humidity;
-                console.log(list[i]);
-                // console.log(dayOfListItem);
-                // console.log(dayObject);
-                fiveDaySorted.push(dayObject);
+
+                setForecast(newForecast);
                 usedDays.push(dayOfListItem);
-              }
             }
           }
-          // console.log(fiveDaySorted);
+          console.log(forecast);
         });
     }
 
     React.useEffect(() => {
         if(city !== "" && (coords["lat"] != 0 || coords["lon"] != 0)) {
-            console.log(coords);
+            // console.log(coords);
             fetchFiveDay();
         }
     }, [coords, city])
 
     return (
-        <div>
-            <p>FiveDay</p>
+        <div className='h-[10rem] w-full flex flex-col justify-center'>
+            <div className='text-3xl'>FiveDay</div>
+            <div className='flex p-2'>
+                {forecast.map((day) => {
+                    return (<div className='flex flex-col p-2'>
+                        <span>{`Date: ${day.date}`}</span>
+                        <span>{`Temp: ${day.temp}`}</span>
+                        <span>{`Wind: ${day.wind}`}</span>
+                        <span>{`humidity: ${day.humidity}`}</span>
+                    </div>)
+                })}
+            </div>
         </div>
     );
 };
