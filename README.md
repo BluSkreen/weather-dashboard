@@ -4,7 +4,7 @@
 
 The objective was to use React to create a dynamic and interactive weather-dashboard. Tailwind is used to style everything and Typescript keeps everything type-safe.
 
-## [Live Demo](https://cascading-solar-system.herokuapp.com/ "blu-weather")
+## [Live Demo](https://blu-forecast.netlify.app// "blu-weather")
 
 ## Run Locally
 
