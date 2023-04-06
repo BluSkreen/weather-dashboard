@@ -7,5 +7,10 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@catppuccin/tailwindcss')({
+        prefix: 'ctp',
+        defaultFlavour: 'macchiato',
+    }),
+  ],
 }

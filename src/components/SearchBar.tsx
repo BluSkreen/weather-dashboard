@@ -52,7 +52,7 @@ const SearchBar = () => {
     return (
         <div className="">
             <input 
-                className="text-black"
+                className="bg-ctp-blue/60 focus:outline-none focus:ring-1 focus:ring-ctp-rosewater text-ctp-rosewater"
                 type="text" 
                 value={searchCity} 
                 onChange={(e) => setSearchCity(e.target.value)}
