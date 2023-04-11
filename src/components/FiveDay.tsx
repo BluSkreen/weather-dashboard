@@ -76,7 +76,7 @@ const FiveDay = () => {
     }, [coords, city])
 
     return (
-        <div className='h-[10rem] w-full flex flex-col justify-center'>
+        <div className='h-[10rem] w-full flex flex-col items-center justify-center'>
             <div className='text-3xl'>FiveDay</div>
             <div className='flex p-2'>
                 {forecast.map((day) => {

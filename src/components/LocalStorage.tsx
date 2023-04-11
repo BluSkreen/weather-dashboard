@@ -35,14 +35,13 @@ const LocalStorage = () => {
     }
 
     return (
-        <div>
-            <h1>Saved</h1>
-            <div className='flex flex-col'>
+        <div className="w-full flex flex-col items-center">
+            <div className='w-full flex flex-row flex-wrap'>
                 { Object.entries(saved).map(([key, value]) => { return (
-                    <div className='flex justify-between'>
-                        <button><span className='' key={key}>{key}</span></button>
-                        <button value={key} onClick={deleteCity}>
-                            {`delete`}
+                    <div className='flex mx-[0.5rem] justify-between border-2 rounded-md'>
+                        <button className="mr-1 ml-2"><span className='' key={key}>{key}</span></button>
+                        <button className="ml-1 mr-2 text-ctp-red" value={key} onClick={deleteCity}>
+                            {`X`}
                         </button>
                     </div>
                 )})}

@@ -52,12 +52,19 @@ const SearchBar = () => {
     return (
         <div className="">
             <input 
-                className="bg-ctp-blue/60 focus:outline-none focus:ring-1 focus:ring-ctp-rosewater text-ctp-rosewater"
+                className="
+                    bg-ctp-blue/60 text-ctp-rosewater
+                    focus:outline-none focus:ring-1 focus:ring-ctp-rosewater
+                    rounded-md
+                "
                 type="text" 
                 value={searchCity} 
                 onChange={(e) => setSearchCity(e.target.value)}
             />
-            <button type="button" onClick={fetchCoordinates}>
+            <button 
+                className="pl-[1rem]"
+                type="button" onClick={fetchCoordinates}
+            >
                 Search
             </button>
         </div>
