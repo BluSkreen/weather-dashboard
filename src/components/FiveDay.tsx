@@ -58,9 +58,9 @@ const FiveDay = () => {
                     humidity: `${list[i].main.humidity}`,
                     emoji: emojiURL.replace("{id}", list[i].weather[0].icon),
                 }
-                dayObjectIndex++;
-
                 setForecast(newForecast);
+
+                dayObjectIndex++;
                 usedDays.push(dayOfListItem);
             }
           }
@@ -69,14 +69,18 @@ const FiveDay = () => {
     }
 
     React.useEffect(() => {
+        //fetchFiveDay();
+    }, []);
+
+    React.useEffect(() => {
         if(city !== "" && (coords["lat"] != 0 || coords["lon"] != 0)) {
             // console.log(coords);
             fetchFiveDay();
         }
-    }, [coords, city])
+    }, [coords, city]);
 
     return (
-        <div className='h-[10rem] w-full flex flex-col items-center justify-center'>
+        <div className='h-[10rem] w-full flex flex-col items-center justify-center border-2 rounded-md'>
             <div className='text-3xl'>FiveDay</div>
             <div className='flex p-2'>
                 {forecast.map((day) => {

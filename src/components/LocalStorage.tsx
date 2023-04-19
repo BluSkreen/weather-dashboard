@@ -6,7 +6,7 @@ const LocalStorage = () => {
     const { coords, updateCoords, city, onCityChange } = useCoordsContext();
     const [saved, setSaved] = React.useState({});
 
-    React.useEffect(() => {
+    const update = () => {
         if (localStorage.length){
             let keys = Object.keys(localStorage);
             let update: UpdateSaved = {};
@@ -23,7 +23,15 @@ const LocalStorage = () => {
             console.log("update");
             console.log(update);
         }
+    }
+
+    React.useEffect(() => {
+        update();
     }, [city, coords]);
+
+    React.useEffect(() => {
+        update();
+    }, []);
 
     const deleteCity = (event: React.MouseEvent) => {
         event.preventDefault();

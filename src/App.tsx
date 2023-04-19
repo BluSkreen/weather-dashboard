@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CityProvider from "./context/coordsContext";
-import { Header, SearchBar, LocalStorage, OneDay, FiveDay } from './components';
+import { Header, SearchBar, LocalStorage, OneDay, FiveDay, DisplayChart } from './components';
 import './App.css';
 
 function App() {
@@ -17,7 +17,9 @@ function App() {
                         <SearchBar/>
                         <OneDay/>
                     </section>
-                    <section className="h-full w-[30rem]"></section>
+                    <section className="h-full w-[30rem]">
+                        <DisplayChart/>
+                    </section>
                 </section>
 
                 <section className="min-w-[40rem]">
