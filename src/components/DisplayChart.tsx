@@ -58,6 +58,7 @@
          data,
          primaryAxis,
          secondaryAxes,
+         dark: true, 
        }}
      />
    )

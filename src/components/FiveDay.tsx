@@ -34,6 +34,7 @@ const FiveDay = () => {
         })
         .then(function (fiveDayData) {
             //TODO change: this currently gets the first hour of each dayObjectIndex
+          console.log(fiveDayData);
           let list = fiveDayData.list;
           let dayObjectIndex = 0;
           let usedDays: string[] = []; // Keeps track of days seen
@@ -80,7 +81,7 @@ const FiveDay = () => {
     }, [coords, city]);
 
     return (
-        <div className='h-[10rem] w-full flex flex-col items-center justify-center border-2 rounded-md'>
+        <div className='h-[10rem] w-full flex flex-col items-center justify-center bg-gradient-to-b from-ctp-base to-ctp-crust border-ctp-sky border-2 rounded-md'>
             <div className='text-3xl'>FiveDay</div>
             <div className='flex p-2'>
                 {forecast.map((day) => {

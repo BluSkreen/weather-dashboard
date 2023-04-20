@@ -50,7 +50,7 @@ const OneDay = () => {
     }, [coords, city])
 
     return (
-        <article className='h-[10rem] w-full my-3 flex flex-col items-center justify-center border-solid border-2 rounded-md'>
+        <article className='h-[10rem] w-full my-3 flex flex-col items-center justify-center bg-gradient-to-b from-ctp-base to-ctp-crust border-ctp-sky border-solid border-2 rounded-md'>
             <h2 className='text-xl'>Today's Weather</h2>
             <h1 className='text-3xl'>{city}</h1>
             <span>{`Temp: ${temp}`} </span>

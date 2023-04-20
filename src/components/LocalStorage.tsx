@@ -46,7 +46,7 @@ const LocalStorage = () => {
         <div className="w-full flex flex-col items-center">
             <div className='w-full flex flex-row flex-wrap'>
                 { Object.entries(saved).map(([key, value]) => { return (
-                    <div className='flex mx-[0.5rem] justify-between border-2 rounded-md'>
+                    <div className='flex mx-[0.5rem] justify-between bg-ctp-mantle border-ctp-sky border-2 rounded-md'>
                         <button className="mr-1 ml-2"><span className='' key={key}>{key}</span></button>
                         <button className="ml-1 mr-2 text-ctp-red" value={key} onClick={deleteCity}>
                             {`X`}

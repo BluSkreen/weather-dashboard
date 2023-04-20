@@ -53,7 +53,7 @@ const SearchBar = () => {
         <div className="">
             <input 
                 className="
-                    bg-ctp-blue/60 text-ctp-rosewater
+                    bg-ctp-sky text-ctp-rosewater
                     focus:outline-none focus:ring-1 focus:ring-ctp-rosewater
                     rounded-md
                 "
