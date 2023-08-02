@@ -67,6 +67,9 @@ const FiveDay = () => {
             <div className='text-3xl'>FiveDay</div>
             <div className='flex p-2'>
                 {weatherData.map((day) => {
+                    if (day.hour !== '12') { 
+                        return;
+                    }
                     return (<div className='flex flex-col p-2'>
                         <span>{`Date: ${day.date}`}</span>
                         <span>{`Temp: ${day.temp}`}</span>
