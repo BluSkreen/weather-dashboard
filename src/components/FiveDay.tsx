@@ -1,27 +1,14 @@
 import * as React from 'react';
 import { useCoordsContext } from "../context/coordsContext";
-import { CityContextType, CoordsType, LSCityType } from "../@types/city";
+import { CityContextType, CoordsType, LSCityType, WeatherDataType } from "../@types/city";
 
 const apiKeyOne = "2768f4e462cf5ac";
 const apiKeyTwo = "7fe624327115c943a";
 const fiveDayAPI = new URL("https://api.openweathermap.org/data/2.5/forecast");
 
 const FiveDay = () => {
-    const { coords, updateCoords, city, onCityChange } = useCoordsContext();
-    const [temp, setTemp] = React.useState("");
-    const [wind, setWind] = React.useState("");
-    const [humidity, setHumidity] = React.useState("");
-    const [emoji, setEmoji] = React.useState("");
+    const { coords, city, weatherData, onWeatherDataChange } = useCoordsContext();
 
-    const [forecast, setForecast] = React.useState([{
-        date: "",
-        temp: "",
-        wind: "",
-        humidity: "",
-        emoji: "",
-    }]);
-
-    // This function will get the five day weather for given coords and display them
     async function fetchFiveDay() {
       fiveDayAPI.searchParams.set("lat", `${coords["lat"]}`);
       fiveDayAPI.searchParams.set("lon", `${coords["lon"]}`);
@@ -33,39 +20,34 @@ const FiveDay = () => {
           return response.json();
         })
         .then(function (fiveDayData) {
-            //TODO change: this currently gets the first hour of each dayObjectIndex
-          console.log(fiveDayData);
           let list = fiveDayData.list;
-          let dayObjectIndex = 0;
-          let usedDays: string[] = []; // Keeps track of days seen
-          // go through every item in list (i < 40)
-          // use first hour of each day
-          for (let i = 0; i < list.length; i++) {
-            let dayOfListItem = list[i].dt_txt.split("-")[2].split(" ")[0];
-            const d = new Date();
-            let today = d.getDate();
-            // compare current day to day of list[i]
-            // AND compare current day + 6 to the day of list[i]
-            if (today != dayOfListItem 
-                && today + 6 != dayOfListItem 
-                && !usedDays.includes(dayOfListItem)) {
+          let newWeatherData: WeatherDataType[] = [];
 
+          for (let i = 0; i < list.length; i++) {
+            const itemDate = new Date(list[i].dt_txt);
+            const itemHour = itemDate.getHours();
+            const today = new Date().getDate();
+
+            if (today != itemDate.getDate() 
+                && today + 6 != itemDate.getDate() 
+                && (itemHour === 0 
+                || itemHour === 6 
+                || itemHour === 12 
+                || itemHour === 18)
+                ) {
                 let emojiURL = "https://openweathermap.org/img/wn/{id}@2x.png";
-                let newForecast = forecast;
-                newForecast[dayObjectIndex] = {
-                    date: `${list[i].dt_txt.split(" ")[0]}`,
+                newWeatherData.push({
+                    date: `${itemDate.toJSON().split('T')[0]}`,
+                    hour: `${itemHour}`,
+                    full: `${list[i].dt_txt}`,
                     temp: `${list[i].main.temp}`,
                     wind: `${list[i].wind.speed}`,
                     humidity: `${list[i].main.humidity}`,
                     emoji: emojiURL.replace("{id}", list[i].weather[0].icon),
-                }
-                setForecast(newForecast);
-
-                dayObjectIndex++;
-                usedDays.push(dayOfListItem);
+                })
             }
           }
-          console.log(forecast);
+          onWeatherDataChange(newWeatherData);
         });
     }
 
@@ -81,10 +63,10 @@ const FiveDay = () => {
     }, [coords, city]);
 
     return (
-        <div className='h-[10rem] w-full flex flex-col items-center justify-center bg-gradient-to-b from-ctp-base to-ctp-crust border-ctp-sky border-2 rounded-md'>
+        <div className='h-[13rem] w-full flex flex-col items-center justify-center bg-gradient-to-b from-ctp-base to-ctp-crust border-ctp-sky border-2 rounded-md p-2'>
             <div className='text-3xl'>FiveDay</div>
             <div className='flex p-2'>
-                {forecast.map((day) => {
+                {weatherData.map((day) => {
                     return (<div className='flex flex-col p-2'>
                         <span>{`Date: ${day.date}`}</span>
                         <span>{`Temp: ${day.temp}`}</span>

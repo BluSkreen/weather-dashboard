@@ -1,58 +1,38 @@
- import * as React from 'react';
- import { AxisOptions, Chart } from 'react-charts'
+import * as React from 'react';
+import { AxisOptions, Chart } from 'react-charts'
+import { useCoordsContext } from "../context/coordsContext";
  
- type MyDatum = { 
-     date: Date, 
-     type: string,
-     value: number 
- }
+type MyDatum = { 
+    date: Date, 
+    type: string,
+    value: number 
+}
 
-   const startDate = new Date();
-  // startDate.setFullYear(2020);
-  startDate.setUTCHours(0);
-  startDate.setUTCMinutes(0);
-  startDate.setUTCSeconds(0);
-  startDate.setUTCMilliseconds(0);
- 
- const DisplayChart = () => {
-   const data = [
-     {
-       label: 'React Charts',
-       data: [
-         {
-           date: new Date(startDate.getTime() + 60 * 1000 * 60 * 24 * 1),
-           type: "temp",
-           value: 23467238,
-         },
-         {
-           date: new Date(startDate.getTime() + 60 * 1000 * 60 * 24 * 3),
-           type: "temp",
-           value: 234339429,
-         },
-       ],
-     }, 
-   ]
+const DisplayChart = () => {
+    const { weatherData } = useCoordsContext();
+    const data = [{
+        label: 'React Charts',
+        data: weatherData.map((item) => {
+            return {
+                date: new Date(item.full),
+                type: "temp",
+                value: parseFloat(item.temp),
+            }
+        }),
+     }]
+    console.log(data);
 
-   console.log(data);
- 
-   const primaryAxis = React.useMemo(
-     (): AxisOptions<MyDatum> => ({
+    const primaryAxis = React.useMemo((): AxisOptions<MyDatum> => ({
        getValue: datum => datum.date as Date,
-     }),
-     []
-   )
- 
-   const secondaryAxes = React.useMemo(
-     (): AxisOptions<MyDatum>[] => [
-       {
-         getValue: datum => datum.value,
-         elementType: 'line',
-       },
-     ],
-     []
-   )
- 
-   return (
+       scaleType: 'time',
+    }), [])
+
+    const secondaryAxes = React.useMemo((): AxisOptions<MyDatum>[] => [{
+        getValue: datum => datum.value,
+        elementType: 'line',
+    }], [])
+
+    return (
      <Chart
        options={{
          data,
@@ -61,7 +41,7 @@
          dark: true, 
        }}
      />
-   )
+    )
  }
 
  export default DisplayChart;
